@@ -1,0 +1,35 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.8;
+
+// This contract is for a basic token system
+contract MyContract {
+
+    // Public variables for token details
+    string public Token_name;
+    string public Token_abbrv;
+    uint256 public Total_supply;
+
+    // Mapping of addresses to token balances
+    mapping(address => uint256) public balances;
+
+    // Constructor to initialize the contract with token details and initial supply
+    constructor(string memory _name, string memory _symbol, uint256 _initialSupply) {
+        Token_name = _name;
+        Token_abbrv = _symbol;
+        Total_supply = _initialSupply;
+        balances[msg.sender] = _initialSupply;
+    }
+
+    // Function to mint new tokens, increasing total supply and balance of the specified address
+    function mint(address _to, uint256 _amount) public {
+        Total_supply += _amount;
+        balances[_to] += _amount;
+    }
+
+    // Function to burn tokens, decreasing total supply and balance of the specified address
+    function burn(address _from, uint256 _amount) public {
+        require(balances[_from] >= _amount, "Insufficient balance to burn");
+        Total_supply -= _amount;
+        balances[_from] -= _amount;
+    }
+}
